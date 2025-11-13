@@ -105,47 +105,44 @@ CREATE TABLE Table_Name (
 
 **Question 1**
 --
--- Write a SQL Query  to change the name of attribute "name" to "first_name"  and add mobilenumber as number ,DOB as Date in the table Companies. 
+Create a table named ProjectAssignments with the following constraints:
+AssignmentID as INTEGER should be the primary key.
+EmployeeID as INTEGER should be a foreign key referencing Employees(EmployeeID).
+ProjectID as INTEGER should be a foreign key referencing Projects(ProjectID).
+AssignmentDate as DATE should be NOT NULL.
 
 ```sql
- ALTER TABLE Companies
-rename name to first_name;
-ALTER TABLE Companies
-ADD COLUMN mobilenumber number;
-ALTER TABLE Companies
-ADD COLUMN DOB Date;
-```
-
-**Output:**
-
-![image](https://github.com/user-attachments/assets/5adebeca-9b74-4b1f-92cf-9f64990c7825)
-
-
-**Question 2**
----
--- Create a table named Products with the following constraints:
-ProductID as INTEGER should be the primary key.
-ProductName as TEXT should be unique and not NULL.
-Price as REAL should be greater than 0.
-StockQuantity as INTEGER should be non-negative.
-
-```sql
- CREATE TABLE Products
-(
-ProductID INTEGER primary key,
-ProductName TEXT UNIQUE NOT NULL,
-Price REAL CHECK(Price>0),
-StockQuantity INTEGER CHECK(StockQuantity>0)
+CREATE TABLE ProjectAssignments (
+    AssignmentID   INTEGER PRIMARY KEY,
+    EmployeeID     INTEGER,
+    ProjectID      INTEGER,
+    AssignmentDate DATE NOT NULL,
+    FOREIGN KEY (EmployeeID) REFERENCES Employees(EmployeeID),
+    FOREIGN KEY (ProjectID) REFERENCES Projects(ProjectID)
 );
 ```
 
 **Output:**
-![image](https://github.com/user-attachments/assets/657c18ee-68f3-45d8-9773-acb008602e21)
 
+<img width="821" height="152" alt="image" src="https://github.com/user-attachments/assets/26c0ba50-3fd2-41db-812e-5957a7268cfe" />
+
+**Question 2**
+---
+-- Write an SQL query to add two new columns, first_name and last_name, to the table employee. Both columns should have a data type of varchar(50).
+```sql
+ALTER TABLE employee
+ADD COLUMN first_name varchar(50);
+
+ALTER TABLE employee
+ADD COLUMN last_name varchar(50);
+```
+
+**Output:**
+<img width="1080" height="184" alt="image" src="https://github.com/user-attachments/assets/28cdc588-5e2f-431e-aa9d-f8a10f75ccdb" />
 
 **Question 3**
 ---
--- Create a table named Products with the following columns:
+-- Insert a book with ISBN 978-1234567890, Title Data Science Essentials, Author Jane Doe, Publisher TechBooks, and Year 2024 into the Books table.
 
 ProductID as INTEGER
 ProductName as TEXT
@@ -153,122 +150,103 @@ Price as REAL
 Stock as INTEGER
 
 ```sql
-CREATE TABLE Products
-(
-ProductID INTEGER,
-ProductName TEXT,
-Price REAL,
-Stock INTEGER
-);
+INSERT INTO Books (ISBN, Title, Author, Publisher, Year)
+VALUES ('978-1234567890', 'Data Science Essentials', 'Jane Doe', 'TechBooks', 2024);
 ```
 
 **Output:**
-
-![image](https://github.com/user-attachments/assets/0d1e2ed1-fee3-4cd1-9107-215e72ef9594)
-
+<img width="1157" height="123" alt="image" src="https://github.com/user-attachments/assets/0a28ff44-f334-4361-8940-d754c50981ef" />
 
 **Question 4**
 ---
--- Insert the following employees into the Employee table:
+-- Write a SQL Query  to Rename attribute "name" to "first_name"  and add mobilenumber as number ,DOB as Date,State as varchar(30) in the table Companies. 
 
-EmployeeID  Name        Position    Department  Salary
-----------  ----------  ----------  ----------  ----------
-2           John Smith  Developer   IT          75000
-3           Anna Bell   Designer    Marketing   68000
 ```sql
-INSERT INTO Employee(EmployeeID,Name,Position,Department ,Salary)
-values(2,           'John Smith'  ,'Developer'  , 'IT'  ,        75000);
-INSERT INTO Employee(EmployeeID,Name,Position,Department ,Salary)
-values(3,           'Anna Bell'  ,'Designer'  , 'Marketing'  ,        68000);
+ALTER TABLE Companies RENAME COLUMN name TO first_name;
+ALTER TABLE Companies ADD COLUMN mobilenumber number;
+ALTER TABLE Companies ADD COLUMN DOB Date;
+ALTER TABLE Companies ADD COLUMN State varchar(30);
 ```
 
 **Output:**
-![image](https://github.com/user-attachments/assets/19871a6d-b967-4892-969b-07e40479cefd)
-
+<img width="1084" height="265" alt="image" src="https://github.com/user-attachments/assets/265c4623-5594-49e7-89d6-e46186446a0f" />
 
 **Question 5**
 ---
---Create a table named Departments with the following columns:
+--Create a table named Employees with the following constraints:
 
-DepartmentID as INTEGER
-DepartmentName as TEXT
-
+EmployeeID should be the primary key.
+FirstName and LastName should be NOT NULL.
+Email should be unique.
+Salary should be greater than 0.
+DepartmentID should be a foreign key referencing the Departments table.
 ```sql
-CREATE TABLE Departments
-(
-DepartmentID INTEGER,
-DepartmentName TEXT
-
+CREATE TABLE Employees (
+    EmployeeID    INT PRIMARY KEY,
+    FirstName     VARCHAR(50) NOT NULL,
+    LastName      VARCHAR(50) NOT NULL,
+    Email         VARCHAR(100) UNIQUE,
+    Salary        DECIMAL(10,2) CHECK (Salary > 0),
+    DepartmentID  INT,
+    FOREIGN KEY (DepartmentID) REFERENCES Departments(DepartmentID)
 );
 ```
 
 **Output:**
-
-![image](https://github.com/user-attachments/assets/03354192-0e68-429e-adbc-8e3145b9ac23)
+<img width="843" height="282" alt="image" src="https://github.com/user-attachments/assets/775724c8-ae84-424e-919c-6fd6c03b8a50" />
 
 **Question 6**
 ---
--- Insert the below data into the Employee table, allowing the Department and Salary columns to take their default values.
+-- Insert all employees from Former_employees into Employee
 
-EmployeeID  Name         Position
-----------  -----------  ----------
-4           Emily White  Analyst
-
-Note: The Department and Salary columns will use their default values.  
+Table attributes are EmployeeID, Name, Department, Salary
 
 ```sql
-INSERT INTO Employee(EmployeeID,Name,Position)
-values(4           ,'Emily White','Analyst');
+INSERT INTO Employee (EmployeeID, Name, Department, Salary)
+SELECT EmployeeID, Name, Department, Salary
+FROM Former_employees;
 ```
 
 **Output:**
-![image](https://github.com/user-attachments/assets/fedeb403-34e6-4d28-bef6-f5ce460d2a0d)
-
-
+<img width="735" height="163" alt="image" src="https://github.com/user-attachments/assets/dd6b2db1-2ce4-4a72-94e6-c492bee4455b" />
 
 **Question 7**
 ---
--- Create a table named Orders with the following constraints:
-OrderID as INTEGER should be the primary key.
-OrderDate as DATE should be not NULL.
-CustomerID as INTEGER should be a foreign key referencing Customers(CustomerID).
+-- Create a table named Department with the following constraints:
+DepartmentID as INTEGER should be the primary key.
+DepartmentName as TEXT should be unique and not NULL.
+Location as TEXT.
 
 ```sql
-CREATE TABLE Orders
-(
-OrderID INTEGER primary key,
-OrderDate DATE NOT NULL,
-CustomerID INTEGER,
-FOREIGN KEY(CustomerID) REFERENCES Customers(CustomerID)
+CREATE TABLE Department (
+    DepartmentID   INTEGER PRIMARY KEY,
+    DepartmentName TEXT NOT NULL UNIQUE,
+    Location       TEXT
 );
-
 ```
 
 **Output:**
-
-![image](https://github.com/user-attachments/assets/e2810841-1cfc-47c6-8ec1-85d72545f94d)
-
+<img width="903" height="164" alt="image" src="https://github.com/user-attachments/assets/69888ea8-ee12-4eb9-a4e6-154444950578" />
 
 **Question 8**
 ---
--- Insert the following students into the Student_details table:
-RollNo      Name        Gender      Subject     MARKS
-----------  ----------  ----------  ----------  ----------
-202            Ella King         F           Chemistry   87
-203            James Bond   M          Literature    78
+Insert the following customers into the Customers table:
 
- 
+CustomerID  Name         Address     City        ZipCode
+----------  -----------  ----------  ----------  ----------
+302         Laura Croft  456 Elm St  Seattle     98101
+303         Bruce Wayne  789 Oak St  Gotham      10001
 
 ```sql
-INSERT INTO Student_details(RollNo ,Name    ,    Gender  ,    Subject ,    MARKS)
-values(202       ,  'Ella King'  ,'F','Chemistry' ,  87);
-INSERT INTO Student_details(RollNo ,Name    ,    Gender  ,    Subject ,    MARKS)
-values(203       ,  'James Bond'  ,'M','Literature' ,  78);
+INSERT INTO Customers (CustomerID, Name, Address, City, ZipCode)
+VALUES (302, 'Laura Croft', '456 Elm St', 'Seattle', '98101');
+
+INSERT INTO Customers (CustomerID, Name, Address, City, ZipCode)
+VALUES (303, 'Bruce Wayne', '789 Oak St', 'Gotham', '10001');
 ```
 
 **Output:**
-
-![image](https://github.com/user-attachments/assets/747af22d-e1ed-4b8b-a4a0-1747733f20ad)
+<img width="921" height="233" alt="image" src="https://github.com/user-attachments/assets/c2dd14a2-ea21-48e2-a1b1-d9171088e8e7" />
 
 **Question 9**
 ---
